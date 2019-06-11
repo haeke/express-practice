@@ -53,4 +53,12 @@ app.get("/", (req, res) => {
   res.json(persons);
 });
 
+app.get("/info", (req, res) => {
+  res.send(
+    `Phonebook has info for ${
+      persons.length
+    } different people.</br></br>${new Date()}`
+  );
+});
+
 module.exports = app;
