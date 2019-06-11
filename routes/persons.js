@@ -2,7 +2,7 @@ const express = require("express");
 // Create a new router instance
 const app = express.Router();
 
-const { generateId } = require("../utils/helpers");
+const { generateId, duplicateName } = require("../utils/helpers");
 
 //@route /api/persons/test
 //@desc This route is just a test to make sure the router is working with the main router
@@ -106,13 +106,37 @@ app.post("/", (req, res) => {
   if (!body.content) {
     return res.status(404).json({ error: "Content is missing." });
   }
+
+  if (!body.name) {
+    return res.status(404).json({ error: "Name cannot be missing" });
+  } else if (body.name) {
+    // check to see if a duplicate name exists
+    let name = duplicateName(persons, body.name);
+    if (name) {
+      return res.status(404).json({ error: "Duplicate name found." });
+    }
+  }
+
+  if (!body.number) {
+    return res.status(404).json({ error: "Number cannot be missing." });
+  }
   const person = {
     content: body.content,
+    name: body.name,
     id: generateId(persons)
   };
 
   persons = persons.concat(person);
   res.json(person);
 });
+
+/*
+
+Implement error handling for creating new entries. The request is not allowed to succeed, if:
+
+The name or number is missing
+The name already exists in the phonebook
+Respond to requests like these with the appropriate status code, and also send back information that explains the reason for the error,
+*/
 
 module.exports = app;
