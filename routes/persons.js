@@ -73,7 +73,24 @@ app.get("/:id", (req, res) => {
 
   let person = persons.find(person => person.id === id);
 
-  res.json(person);
+  if (person) {
+    console.log("person found...");
+    res.json(person);
+  } else {
+    res.send(404).end();
+  }
+});
+
+//@route /api/persons/:id
+//@desc deletes a single person from the persons array.
+//@access public
+app.delete("/:id", (req, res) => {
+  // Get the ID from the req.params.id
+  let id = Number(req.params.id);
+  // Use the filter method to return a new array that does not contain the id passed.
+  let phonebook = persons.filter(person => person.id !== id);
+
+  res.send(204).end();
 });
 
 module.exports = app;
