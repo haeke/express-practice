@@ -1,6 +1,9 @@
 const express = require("express");
 // Create a new router instance
 const app = express.Router();
+
+const { generateId } = require("../utils/helpers");
+
 //@route /api/persons/test
 //@desc This route is just a test to make sure the router is working with the main router
 //@access public access
@@ -8,7 +11,7 @@ app.get("/test", (req, res) => {
   res.json({ working: "The phone-book route is working." });
 });
 
-const persons = [
+let persons = [
   {
     name: "Manny Pacquiao",
     number: "010-230957",
@@ -91,6 +94,25 @@ app.delete("/:id", (req, res) => {
   let phonebook = persons.filter(person => person.id !== id);
 
   res.send(204).end();
+});
+
+//@route /api/persons
+//@desc Adds a new person to the persons array.
+//@access public
+app.post("/", (req, res) => {
+  // get the body of the request
+  const body = req.body;
+  // check to make sure that content exists on the body of the request
+  if (!body.content) {
+    return res.status(404).json({ error: "Content is missing." });
+  }
+  const person = {
+    content: body.content,
+    id: generateId(persons)
+  };
+
+  persons = persons.concat(person);
+  res.json(person);
 });
 
 module.exports = app;
