@@ -47,18 +47,33 @@ const persons = [
 ];
 
 //@route /api/persons
-//@desc Will return a hard coded list of phonenook entries
+//@desc Will return a hard coded list of phonebook entries
 //@access public
 app.get("/", (req, res) => {
   res.json(persons);
 });
 
+//@route /api/persons/info
+//@desc Will return the number of persons in the persons array along with the current date.
+//@access public
 app.get("/info", (req, res) => {
   res.send(
     `Phonebook has info for ${
       persons.length
     } different people.</br></br>${new Date()}`
   );
+});
+
+//@route /api/persons/:id
+//@desc Returns a single person by id passed in as a URL parameter.
+//@access public
+app.get("/:id", (req, res) => {
+  // Get the ID from the req.params.id
+  let id = Number(req.params.id);
+
+  let person = persons.find(person => person.id === id);
+
+  res.json(person);
 });
 
 module.exports = app;
