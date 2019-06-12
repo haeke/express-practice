@@ -16,7 +16,7 @@ const noteSchema = new mongoose.Schema({
   date: Date,
   important: Boolean
 });
-
+// In the Note model definition, the first "Note" parameter is the singular name of the model. The name of collection will the lowercased plural notes, because the Mongoose convention is to automatically name collections as the plural (e.g. notes) when the schema refers to them in the singular (e.g. Note).
 const Note = mongoose.model("Note", noteSchema);
 
 const note = new Note({
