@@ -1,8 +1,34 @@
 // A simple server that uses the HTTP library
 
 const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 const bodyParser = require("body-parser");
 const app = express();
+
+// mongodb atlas server connection code
+const url = process.env.MONGO_URI;
+
+mongoose.connect(url, { useNewUrlParser: true });
+
+const noteSchema = mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean
+});
+
+const Note = mongoose.model("Note", noteSchema);
+// end mongodb atlas server connection and schema code.
+
+//@route /api/notes
+//@desc returns the current list of documents that exist in the notes-app database on mongodb atlas
+//@access public
+app.get("/api/notes", (req, res) => {
+  Note.find({}).then(notes => {
+    res.json(notes);
+  });
+});
 
 // other routers that we want to use
 const persons = require("./routes/persons");
