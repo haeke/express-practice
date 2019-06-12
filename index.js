@@ -93,3 +93,5 @@ const port = 3001;
 app.listen(port);
 
 console.log(`Server is running on http://localhost:${port}`);
+
+// mongodb+srv://waebae:<password>@cluster0-upfow.mongodb.net/test?retryWrites=true&w=majority
