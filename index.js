@@ -78,9 +78,14 @@ app.get("/", (req, res) => {
 
 // define a route that will return a note by ID
 app.get("/api/notes/:id", (req, res) => {
-  Note.findById(req.params.id).then(note => {
-    res.json(note.toJSON());
-  });
+  Note.findById(req.params.id)
+    .then(note => {
+      res.json(note.toJSON());
+    })
+    .catch(error => {
+      console.log(error.message);
+      res.status(404).end();
+    });
 });
 
 // define a route that will delete a resource by id
