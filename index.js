@@ -79,7 +79,6 @@ app.get("/", (req, res) => {
 // define a route that will return a note by ID
 app.get("/api/notes/:id", (req, res) => {
   Note.findById(req.params.id).then(note => {
-    console.log("found note ", note);
     res.json(note.toJSON());
   });
 });

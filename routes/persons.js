@@ -2,6 +2,8 @@ const express = require("express");
 // Create a new router instance
 const app = express.Router();
 
+const PhoneBook = require("../models/phonebook");
+
 const { generateId, duplicateName } = require("../utils/helpers");
 
 //@route /api/persons/test
@@ -53,7 +55,10 @@ let persons = [
 //@desc Will return a hard coded list of phonebook entries
 //@access public
 app.get("/", (req, res) => {
-  res.json(persons);
+  // res.json(persons);
+  PhoneBook.find({}).then(persons => {
+    res.json(persons);
+  });
 });
 
 //@route /api/persons/info
