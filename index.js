@@ -53,21 +53,23 @@ const generateId = () => {
   return maxId + 1;
 };
 
-app.post("/notes", (req, res) => {
+app.post("/api/notes", (req, res) => {
   const body = req.body;
 
   // make sure the body has content
   if (!body.content) {
     return res.status(400).json({ error: "content missing" });
   }
-  const note = {
+
+  const note = new Note({
     content: body.content,
     important: body.important || false,
-    date: new Date(),
-    id: generateId()
-  };
-  notes = notes.concat(note);
-  res.json(note);
+    date: new Date()
+  });
+
+  note.save().then(savedNote => {
+    res.json(savedNote.toJSON());
+  });
 });
 
 app.get("/", (req, res) => {
@@ -104,7 +106,7 @@ app.get("/notes", (req, res) => {
   res.json(notes);
 });
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 app.listen(port);
 
 console.log(`Server is running on http://localhost:${port}`);
