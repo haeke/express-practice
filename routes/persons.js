@@ -125,14 +125,17 @@ app.post("/", (req, res) => {
   if (!body.number) {
     return res.status(404).json({ error: "Number cannot be missing." });
   }
-  const person = {
+  // create a new instance of the PhoneBook constructor function with the values passed in from the body of the post request
+  const person = new PhoneBook({
     content: body.content,
     name: body.name,
-    id: generateId(persons)
-  };
-
-  persons = persons.concat(person);
-  res.json(person);
+    number: body.number,
+    date: new Date()
+  });
+  // Make sure the new person is saved to the database before returning the document.
+  person.save().then(savedPerson => {
+    res.json(savedPerson.toJSON());
+  });
 });
 
 /*
