@@ -66,7 +66,7 @@ app.post("/api/notes", (req, res) => {
     important: body.important || false,
     date: new Date()
   });
-
+  // Ensure that the document is returned after it's saved to the database.
   note.save().then(savedNote => {
     res.json(savedNote.toJSON());
   });
@@ -77,19 +77,11 @@ app.get("/", (req, res) => {
 });
 
 // define a route that will return a note by ID
-app.get("/note/:id", (req, res) => {
-  // req.params.id
-  // make sure that we convert the type of the id passed to the router from type String to type Number
-  const id = Number(req.params.id);
-  console.log("id : ", id);
-  let note = notes.find(note => note.id === id);
-  console.log("note value: ", note);
-  if (note) {
-    console.log("sending note...");
-    res.json(note);
-  } else {
-    res.send(404).end();
-  }
+app.get("/api/notes/:id", (req, res) => {
+  Note.findById(req.params.id).then(note => {
+    console.log("found note ", note);
+    res.json(note.toJSON());
+  });
 });
 
 // define a route that will delete a resource by id
