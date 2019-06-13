@@ -7,19 +7,8 @@ dotenv.config();
 const bodyParser = require("body-parser");
 const app = express();
 
-// mongodb atlas server connection code
-const url = process.env.MONGO_URI;
-
-mongoose.connect(url, { useNewUrlParser: true });
-
-const noteSchema = mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean
-});
-
-const Note = mongoose.model("Note", noteSchema);
-// end mongodb atlas server connection and schema code.
+// The Note schema along with connection to the MongoDB database.
+const Note = require("./models/note");
 
 //@route /api/notes
 //@desc returns the current list of documents that exist in the notes-app database on mongodb atlas
@@ -119,5 +108,3 @@ const port = 3001;
 app.listen(port);
 
 console.log(`Server is running on http://localhost:${port}`);
-
-// mongodb+srv://waebae:<password>@cluster0-upfow.mongodb.net/test?retryWrites=true&w=majority
